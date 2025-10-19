@@ -54,5 +54,51 @@ plt.bar(df_alineado['Segundo'],random_vars_2, color='salmon')
 plt.show()
 
 
+"""
+--------------------------------------------- Análisis de Variables Conjuntas -----------------------------------
+"""
+
+def categorize_size(x, small, big):
+    categorize = ''
+    if x >= big:
+        categorize = 'Big'
+    elif small < x < big:
+        categorize = 'Mean'
+    else:
+        categorize = 'Small'
+
+    return categorize
+
+mean = df['Packet_Size'].mean()
+
+o = df['Packet_Size'].std()
+
+df['SizeCategory'] = df['Packet_Size'].apply(lambda x: categorize_size(x, mean - o, mean + o))
+
+contingencia =  pd.crosstab(df['Protocol'], df['SizeCategory'])
+
+print(contingencia)
+
+prob_TCP= contingencia.loc[6].sum()/contingencia.values.sum()
+print(prob_TCP)
+
+prob_big= contingencia['Big'].sum()/contingencia.values.sum()
+print(prob_big)
+
+prob_big_dado_6 = contingencia.loc[6, 'Big'] / contingencia.loc[6].sum()
+print(prob_big_dado_6)
+
+"""
+no es que los paquetes tcp y grande sean independientes,
+es que casualmente en ese intervalo de tiempo no llego ningun paquete tcp grande
+"""
+
+tabla_prob = contingencia / contingencia.values.sum()
+
+print(tabla_prob)
+
+
+
+
 
 
