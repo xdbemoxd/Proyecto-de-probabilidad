@@ -97,8 +97,15 @@ tabla_prob = contingencia / contingencia.values.sum()
 
 print(tabla_prob)
 
+"""
+----------------------------- FASE 3 ---------------------------
+"""
 
+"""
+Mi regla para detectar una anomalia seria que este por encima ó por debajo de 2 desviaciones estandar de la media,
+sin darme cuenta lo defini asi para la categorizacion y todo me daba mean 
+"""
 
+anomalia = df['Packet_Size'].apply(lambda x: categorize_size( x, mean - ( 2 * o ), mean + ( 2 * o ) ) )
 
-
-
+print(anomalia)
