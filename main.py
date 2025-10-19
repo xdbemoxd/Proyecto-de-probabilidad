@@ -106,6 +106,15 @@ Mi regla para detectar una anomalia seria que este por encima ó por debajo de 2
 sin darme cuenta lo defini asi para la categorizacion y todo me daba mean 
 """
 
-anomalia = df['Packet_Size'].apply(lambda x: categorize_size( x, mean - ( 2 * o ), mean + ( 2 * o ) ) )
+anomalia_b = (2 * o) + mu
 
-print(anomalia)
+df_alineado['anomalia_grande'] = df_alineado['Conteo_Timestamp'] > anomalia_b
+
+df_alineado['p_value'] = poisson.sf(df_alineado['Conteo_Timestamp'] - 1, mu=mu)
+
+anomalia_s = mu - (2 * o) 
+
+df_alineado['anomalia_s'] = df_alineado['p_value'] < anomalia_s
+
+print("Anomalías grande:", df_alineado['anomalia_grande'].sum())
+print("Anomalías pequeña:", df_alineado['anomalia_s'].sum())
